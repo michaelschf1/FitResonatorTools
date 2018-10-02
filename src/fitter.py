@@ -35,7 +35,7 @@ writeTXT('S21.txt', data)
 # Using library "resonator_tools" for fitting notch type resonators
 port1 = circuit.notch_port()
 port1.add_fromtxt('S21.txt', 'dBmagphasedeg', 1)
-print('reading of the data is succesfully finished')
+print('reading of the data is successfully finished')
 
 port1.autofit(electric_delay=None)
 print('autofit is done')
