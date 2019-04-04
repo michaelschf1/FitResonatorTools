@@ -7,44 +7,29 @@ Created on 1 Oct. 2018
 '''
 
 from resonator_tools import circuit
-from utilities import readCSV, trim, calibrate_S21dB, writeTXT
+
+import utilities as ut
 
 # Data file path
-folder = ("C:/Users/z5119993/OneDrive - UNSW/research/measurements/LGR7G f tuning 08.10.18/")
-file_s11 = folder + 'S11_RT_n12dBm_noCal_noSA_fine.s1p'
+folder = "C:/Users/z5119993/OneDrive - UNSW/research/measurements/ICE He3/BA3/LGR/@400mK/"
+file_csv = folder + 'LGR_400mK_n30dBm_7.25G_moreAVG_COM.csv'
 
-# Calibration file path
-# folder_cal = ("/Users/mykhailo/OneDrive - UNSW/research/measurements/" +
-#               "Sample PBG AA1/LGR_PBG_25Aug18_calibration_1.4K/")
-# file_cal = folder_cal + 'S21_SMA1t0SMA2_1p4K_0dBm.csv'
+file_txt = file_csv.replace('csv', 'txt')
 
-# Frequency range that will be analyzed
-fmin = 8.06e9  # frequency in [GHz]
-fmax = 8.12e9  # frequency in [GHz]
-
-# Reading csv file
-# data = readCSV(file_s21, headers=7)
-# # Cut according to the chosen frequency range
-# data = trim(data, fmin, fmax)
-# # Add calibration if needed
-# data = calibrate_S21dB(data, file_cal)
-# # Writing the data to txt file for further fitting
-# writeTXT('S21.txt', data)
-
+ut.convertCSVtoTXT(file_csv, file_txt)
 
 # Using library "resonator_tools" for fitting notch type resonators
-# port1 = circuit.notch_port()
-# port1.add_fromtxt('S21.txt', 'dBmagphasedeg', 1)
-# print('reading of the data is successfully finished')
-# 
-# port1.autofit(electric_delay=None)
-# print('autofit is done')
-# print("Fit results:", port1.fitresults)
-# port1.plotall()
+port1 = circuit.reflection_port()
+port1.add_fromtxt(file_txt, 'dBmagphasedeg', 18, delimiter=' ')
+print('reading of the data is successfully finished')
 
-# port1.GUIfit()
-# print("Fit results:", port1.fitresults)
-# port1.plotall()
+port1.autofit(electric_delay=None)
+print('autofit is done')
+print("Fit results:", port1.fitresults)
+port1.plotall()
+
+port1.GUIfit()
+
 # print("single photon limit:",
 #       port1.get_single_photon_limit(diacorr=True), "dBm")
 # print("photons in reso for input -140dBm:",
@@ -53,9 +38,9 @@ fmax = 8.12e9  # frequency in [GHz]
 
 
 
-port1=circuit.reflection_port()    
-port1.add_froms2p(file_s11, 1,2,'dBmagphasedeg', fdata_unit=1, delimiter=' ')
-port1.autofit( fcrop=(fmin, fmax))
-print("Fit results:", port1.fitresults)
-port1.plotall()
-print("done")
+# port1=circuit.reflection_port()
+# port1.add_froms2p(file_s11, 1,2,'dBmagphasedeg', fdata_unit=1, delimiter=' ')
+# port1.autofit( fcrop=(fmin, fmax))
+# print("Fit results:", port1.fitresults)
+# port1.plotall()
+# print("done")

@@ -9,6 +9,15 @@ from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 
 
+
+def convertCSVtoTXT(csv_file, txt_file ):
+
+    with open(txt_file, "w") as my_output_file:
+        with open(csv_file, "r") as my_input_file:
+            [my_output_file.write(" ".join(row) + '\n') for row in csv.reader(my_input_file)]
+        my_output_file.close()
+    print('conversion successful!')
+
 # cut the data according to set frequency range
 def trim(data, fmin, fmax):
     data_new = []
