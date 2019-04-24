@@ -11,8 +11,9 @@ from resonator_tools import circuit
 import utilities as ut
 
 # Data file path
-folder = "C:/Users/z5119993/OneDrive - UNSW/research/measurements/ICE He3/BA3/LGR/@400mK/"
-file_csv = folder + 'LGR_400mK_n30dBm_7.25G_moreAVG_COM.csv'
+folder = "C:/Users/z5119993/OneDrive - UNSW/research/measurements/ICE He3/BA6/PBG/"
+
+file_csv = folder + 'PBG_N30_400MK_CONSMU_COM.csv'
 
 file_txt = file_csv.replace('csv', 'txt')
 
@@ -30,17 +31,10 @@ port1.plotall()
 
 port1.GUIfit()
 
+
 # print("single photon limit:",
 #       port1.get_single_photon_limit(diacorr=True), "dBm")
 # print("photons in reso for input -140dBm:",
 #       port1.get_photons_in_resonator(-140, unit='dBm', diacorr=True),
 #       "photons")
 
-
-
-# port1=circuit.reflection_port()
-# port1.add_froms2p(file_s11, 1,2,'dBmagphasedeg', fdata_unit=1, delimiter=' ')
-# port1.autofit( fcrop=(fmin, fmax))
-# print("Fit results:", port1.fitresults)
-# port1.plotall()
-# print("done")
