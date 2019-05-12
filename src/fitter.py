@@ -11,8 +11,9 @@ from resonator_tools import circuit
 import utilities as ut
 
 # Data file path
-folder = "C:/Users/z5119993/OneDrive - UNSW/research/measurements/ICE He3/BA3/LGR/@400mK/"
-file_csv = folder + 'LGR_400mK_n30dBm_7.25G_moreAVG_COM.csv'
+#folder = "C:/Users/z5119993/OneDrive - UNSW/research/measurements/ICE He3/BA3/LGR/@400mK/" # for Windows
+folder = '/Users/mykhailo/OneDrive - UNSW/research/measurements/ICE He3/BA3_secondDip_30Apr2019/' # for Mac
+file_csv = folder + 'BA3_PBG_400MK_N35PH_MT400_COM.csv'
 
 file_txt = file_csv.replace('csv', 'txt')
 
