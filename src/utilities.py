@@ -7,6 +7,66 @@ Created on 1 Oct. 2018
 import csv
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
+from os import listdir
+from os.path import isfile, join
+from fnmatch import fnmatch
+
+
+def getFiles(folder):
+
+    onlyfiles = [f for f in listdir(folder) if isfile(join(folder, f))]
+    return onlyfiles
+
+
+
+def matchMagPhasePairs(folder):
+    #create the list of all files in the folder
+    files = getFiles(folder)
+    phases = []
+    for file in files:
+
+        if file.endswith(('P.csv', 'PH.csv')):
+            phases.append(file)
+            files.remove(file)
+
+    pairs={}
+    for phase in phases:
+        for file in files:
+            name=str(file).replace('.csv', '')
+            if fnmatch(phase, name+'P.csv') or fnmatch(phase, name+'PH.csv'):
+                pairs[phase] = file
+    return pairs
+
+
+def combineAll(folder, pairs):
+
+    for phase, mag in pairs.items():
+        with open(folder + '/' + mag.replace('.csv', '') + 'COM.csv', 'xt') as com:
+            list=combineMagPhase(folder, phase, mag)
+            print(list, file=com)
+
+def combineMagPhase(folder, phase, mag, pairs=None):
+
+    row_mag_ph = [[0 for x in range(0)] for y in range(3)]
+    with open(folder + '/' + mag, 'rt') as mag:
+        mag_csv = csv.reader(mag)
+        for _ in range(18):
+            headers = next(mag_csv)
+        for row_mag in mag_csv:
+            if row_mag[0]!='END':
+                row_mag_ph[0].append(row_mag[0])
+                row_mag_ph[1].append(row_mag[1])
+
+    with open(folder + '/' + phase, 'rt') as ph:
+        ph_csv = csv.reader(ph)
+        for _ in range(18):
+            headers = next(ph_csv)
+        for row_ph in ph_csv:
+            if row_ph[0] != 'END':
+                row_mag_ph[2].append(row_ph[1])
+
+    return(row_mag_ph)
+
 
 
 
