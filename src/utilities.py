@@ -18,6 +18,19 @@ def getFiles(folder):
     return onlyfiles
 
 
+def findFiles(folder, pattern):
+    files = getFiles(folder)
+    res = []
+    for file in files:
+        if file.endswith(pattern):
+            res.append(file)
+
+    return res
+
+def writeResults(file, results):
+    with open(file, 'r+') as f:
+        print(results, file=f)
+
 
 def matchMagPhasePairs(folder):
     #create the list of all files in the folder
@@ -30,20 +43,35 @@ def matchMagPhasePairs(folder):
             files.remove(file)
 
     pairs={}
+    print('phases:')
+    print(phases)
+    print('mags left:')
+    print(files)
+
     for phase in phases:
         for file in files:
             name=str(file).replace('.csv', '')
-            if fnmatch(phase, name+'P.csv') or fnmatch(phase, name+'PH.csv'):
+            if fnmatch(phase, name+'P.csv') or fnmatch(phase, name+'PH.csv') or fnmatch(phase, name+'_PH.csv') or fnmatch(phase, name+'_P.csv'):
                 pairs[phase] = file
+
+    print('pairs:')
+    print(pairs)
     return pairs
 
 
 def combineAll(folder, pairs):
 
+    headers = ['Frequency, Hz', 'Magnitude, dB', 'Phase, deg']
+
     for phase, mag in pairs.items():
-        with open(folder + '/' + mag.replace('.csv', '') + 'COM.csv', 'xt') as com:
+        with open(folder + '/' + mag.replace('.csv', '') + 'COM.csv', 'w') as com:
             list=combineMagPhase(folder, phase, mag)
-            print(list, file=com)
+            com_csv = csv.writer(com)
+            com_csv.writerow(headers)
+            com_csv.writerows(transpose(list))
+
+def transpose(matrix):
+    return [*zip(*matrix)]
 
 def combineMagPhase(folder, phase, mag, pairs=None):
 
