@@ -8,15 +8,17 @@ Created on 1 Oct. 2018
 
 from resonator_tools import circuit
 
-import utilities as ut
+import FitResonatorTools.src.utilities as ut
+import pandas as pd
 
 # Data file path
-folder  = '/Users/mykhailo/OneDrive - UNSW/research/measurements/ICE He3/BA10 - Copy/PBG/magnetic field' #for Mac
+folder  = '/Users/mykhailo/OneDrive - UNSW/research/measurements/ICE He3/BA11' #for Mac
 #folder = 'C:/Users/z5119993/OneDrive - UNSW/research/measurements/ICE He3/BA10_tunedLGR_bondWiresReson/' #for Windows
-file = 'QMEM_PBG_0.4K_N10DBM_20V_400MTCOM.csv'
+file = 'BA11_PBG_500mK_n10_V0.csv'
 
 
 file_csv = folder + '/' + file
+
 
 file_txt = file_csv.replace('csv', 'txt')
 
