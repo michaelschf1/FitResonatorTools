@@ -12,9 +12,9 @@ import FitResonatorTools.src.utilities as ut
 import pandas as pd
 
 # Data file path
-folder  = '/Users/mykhailo/OneDrive - UNSW/research/measurements/ICE He3/BA11' #for Mac
-#folder = 'C:/Users/z5119993/OneDrive - UNSW/research/measurements/ICE He3/BA10_tunedLGR_bondWiresReson/' #for Windows
-file = 'BA11_PBG_500mK_n10_V0.csv'
+#folder  = '/Users/mykhailo/OneDrive - UNSW/research/measurements/ICE He3/BA11' #for Mac
+folder = 'C:/Users/z5119993/OneDrive - UNSW/research/measurements/ICE He3/BA11' #for Windows
+file = 'BA11_PBG_500mK_n10_V14.05.csv'
 
 
 file_csv = folder + '/' + file
