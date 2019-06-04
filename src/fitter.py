@@ -39,8 +39,8 @@ port1.plotall()
 
 port1.GUIfit()
 
-# print("single photon limit:",
-#       port1.get_single_photon_limit(diacorr=True), "dBm")
+print("single photon limit:",
+      port1.get_single_photon_limit(diacorr=True), "dBm")
 # print("photons in reso for input -140dBm:",
 #       port1.get_photons_in_resonator(-140, unit='dBm', diacorr=True),
 #       "photons")
