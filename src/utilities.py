@@ -97,7 +97,7 @@ def combineMagPhase(folder, phase, mag, pairs=None):
 
 
 def append_df_to_excel(filename, df, sheet_name='Sheet1', startrow=None,
-                       truncate_sheet=False,
+                       truncate_sheet=False, header_custom = False,
                        **to_excel_kwargs):
     """
     Append a DataFrame [df] to existing Excel file [filename]
@@ -164,7 +164,7 @@ def append_df_to_excel(filename, df, sheet_name='Sheet1', startrow=None,
         startrow = 0
 
     # write out the new sheet
-    df.to_excel(writer, sheet_name, startrow=startrow,header = False, **to_excel_kwargs)
+    df.to_excel(writer, sheet_name, startrow=startrow,header = header_custom, **to_excel_kwargs)
 
     # save the workbook
     writer.save()
