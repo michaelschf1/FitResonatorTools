@@ -30,8 +30,8 @@ def plot_dataframe(x, y , xlab = "Frequency, Hz", ylab = "S11 lin" ):
 
 
 # Data file path
-#folder  = '/Users/mykhailo/OneDrive - UNSW/research/measurements/ICE He3/BA11' #for Mac
-folder = r'C:\Users\z5119993\OneDrive - UNSW\research\JYU LGR\measurements' #for Windows
+folder  = '/Users/mykhailo/OneDrive - UNSW/research/JYU LGR/measurements' #for Mac
+# folder = r'C:\Users\z5119993\OneDrive - UNSW\research\JYU LGR\measurements' #for Windows
 file_mag = 'dat-long-magn.txt'
 file_phase = 'dat-long-phase.txt'
 file_freq = 'freqs-antenna2.txt'
@@ -98,10 +98,17 @@ def trim(mags, phases, freqs, fmin, fmax):
 
     return mags_new, phases_new, freqs_new
 
-mags, phases, freqs = trim(mags, phases, freqs, 13, 18)
+# mags, phases, freqs = trim(mags, phases, freqs, 0, 17)
 
-plot_dataframe(freqs, mags , xlab = "Frequency, Hz", ylab = "S11 lin" )
+
+
+plot_dataframe(freqs, mags , xlab = "Frequency, Hz", ylab = "S11, dB" )
 # Write it the one single file with three columns
+exit()
+
+## FITTING
+
+
 with open(file, "w") as my_out_file:
     my_out_file.write('Frequency ')
     my_out_file.write('Magnitude ')
@@ -122,23 +129,14 @@ port1 = circuit.reflection_port()
 #
 port1.add_fromtxt(file, 'dBmagphasedeg', 1, delimiter=' ')
 print('reading of the data is successfully finished')
-#port1.add_fromtxt(file_csv,'linmagphasedeg',3)
 
-
-port1.autofit(electric_delay=None)
-# # port1.GUIbaselinefit()
+# port1.autofit(electric_delay=None)
+port1.GUIbaselinefit()
 # print('autofit is done')
 # print("Fit results:", port1.fitresults)
-# port1.GUIbaselinefit()
 
 # fit the corrected data
-# port1.GUIfit()
+port1.GUIfit()
 print("Fit results:", port1.fitresults)
 port1.plotall()
-
-# print("single photon limit:",
-#       port1.get_single_photon_limit(diacorr=True), "dBm")
-# print("photons in reso for input -140dBm:",
-#       port1.get_photons_in_resonator(-140, unit='dBm', diacorr=True),
-#       "photons")
 
