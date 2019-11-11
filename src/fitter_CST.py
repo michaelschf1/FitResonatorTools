@@ -30,57 +30,41 @@ def plot_dataframe(x, y , xlab = "Frequency, Hz", ylab = "S11 lin" ):
 
 
 # Data file path
-folder  = '/Users/mykhailo/OneDrive - UNSW/research/JYU LGR/measurements/new/long antenna' #for Mac
+folder  = '/Users/mykhailo/OneDrive - UNSW/research/CST/LGR&PBG_new' #for Mac
 # folder = r'C:\Users\z5119993\OneDrive - UNSW\research\JYU LGR\measurements' #for Windows
-file_mag = 'rt-long-magn.txt'
-file_phase = 'rt-long-phase.txt'
-file_freq = 'freqs-10-20GHz.txt'
+file = 'CA6_flip.txt'
 
-
-file = folder + '/' + file_mag.replace('.txt', '') + '_COM.txt'
-file_mag = folder + '/' + file_mag
-file_phase = folder + '/' + file_phase
-file_freq = folder + '/' + file_freq
-
+file_new = folder + '/' + file.replace('.txt', '') + '_COM.txt'
+file = folder + '/' + file
 
 
 # Read mags. phase. freqs from three different txt files
-with open(file_mag, "r") as my_input_file:
-    data_mag = my_input_file.read()
-    my_input_file.close()
-
-with open(file_phase, "r") as my_input_file:
-    data_phase = my_input_file.read()
-    my_input_file.close()
-
-with open(file_freq, "r") as my_input_file:
-    data_freq = my_input_file.read()
-    my_input_file.close()
-
-
-ms = data_mag.split(',')
-mags = []
-# mags_dB = []
-for m in ms:
-    if m!='':
-        mags.append(float(m))
-        # mags_dB.append(20*np.log10(float(m)))
-
-
-
-ps = data_phase.split(',')
-phases = []
-for p in ps:
-    if p!='':
-        phases.append(float(p))
-
-fs = data_freq.split(',')
 freqs = []
-for f in fs:
-    if f !='':
-        freqs.append(float(f))
+mags = []
+phi = []
+with open(file, "r") as my_input_file:
+    i = 0
+    for line in my_input_file:
+        if i>2:
+            data = line.split('\t')
+            freqs.append(float(data[0]))
+            mags.append(float(data[1]))
+            phi.append(float(data[2]))
+        else:
+            i+=1
 
-# freqs.append(20.0e9)
+    my_input_file.close()
+
+
+
+# mags = []
+# mags_dB = []
+# for m in ms:
+#     if m!='':
+#         mags.append(float(m))
+#         # mags_dB.append(20*np.log10(float(m)))
+#
+
 
 print('conversion successful!')
 
@@ -89,8 +73,8 @@ def trim(mags, phases, freqs, fmin, fmax):
     mags_new = []
     phases_new = []
 
-    fmin = fmin * 1e9  # conversion back to [Hz]
-    fmax = fmax * 1e9
+    fmin = fmin  # conversion back to [Hz]
+    fmax = fmax
     for i, f in enumerate(freqs):
         if float(f) > fmin and float(f) < fmax:
             freqs_new.append(f)
@@ -99,14 +83,14 @@ def trim(mags, phases, freqs, fmin, fmax):
 
     return mags_new, phases_new, freqs_new
 
-# mags, phases, freqs = trim(mags, phases, freqs, 9.6, 10.1)
+mags, phi, freqs = trim(mags, phi, freqs, 7.25, 7.4)
 
 
 
-plot_dataframe(freqs, mags, xlab = "Frequency, Hz", ylab = "S11, dB" )
-plot_dataframe(freqs, phases, xlab = "Frequency, Hz", ylab = "S11, deg" )
+plot_dataframe(freqs, mags, xlab = "Frequency, GHz", ylab = "S11, mag" )
+plot_dataframe(freqs, phi, xlab = "Frequency, GHz", ylab = "S11, deg" )
 # Write it the one single file with three columns
-exit()
+# exit()
 
 ## FITTING
 
@@ -120,7 +104,7 @@ with open(file, "w") as my_out_file:
         if mags[i] !='':
             my_out_file.write(str(freqs[i]) + ' ')
             my_out_file.write(str(mags[i]) + ' ')
-            my_out_file.write(str(phases[i]) + '\n')
+            my_out_file.write(str(phi[i]) + '\n')
 
     my_input_file.close()
 
@@ -129,11 +113,11 @@ with open(file, "w") as my_out_file:
 # Using library "resonator_tools" for fitting notch type resonators
 port1 = circuit.reflection_port()
 #
-port1.add_fromtxt(file, 'dBmagphasedeg', 1, delimiter=' ')
+port1.add_fromtxt(file, 'linmagphasedeg', 1, delimiter=' ')
 print('reading of the data is successfully finished')
 
 # port1.autofit(electric_delay=None)
-port1.GUIbaselinefit()
+# port1.GUIbaselinefit()
 # print('autofit is done')
 # print("Fit results:", port1.fitresults)
 
