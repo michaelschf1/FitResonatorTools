@@ -32,7 +32,7 @@ def plot_dataframe(x, y , xlab = "Frequency, Hz", ylab = "S11 lin" ):
 # Data file path
 folder  = '/Users/mykhailo/OneDrive - UNSW/research/CST/LGR&PBG_new' #for Mac
 # folder = r'C:\Users\z5119993\OneDrive - UNSW\research\JYU LGR\measurements' #for Windows
-file = 'CA6_flip.txt'
+file = 'CA5_flipchipLossless_full.txt'
 
 file_new = folder + '/' + file.replace('.txt', '') + '_COM.txt'
 file = folder + '/' + file
@@ -83,7 +83,7 @@ def trim(mags, phases, freqs, fmin, fmax):
 
     return mags_new, phases_new, freqs_new
 
-mags, phi, freqs = trim(mags, phi, freqs, 7.25, 7.4)
+mags, phi, freqs = trim(mags, phi, freqs, 6.86, 6.89)
 
 
 
@@ -95,7 +95,7 @@ plot_dataframe(freqs, phi, xlab = "Frequency, GHz", ylab = "S11, deg" )
 ## FITTING
 
 
-with open(file, "w") as my_out_file:
+with open(file_new, "w") as my_out_file:
     my_out_file.write('Frequency ')
     my_out_file.write('Magnitude ')
     my_out_file.write('Phase' + '\n')
@@ -113,7 +113,7 @@ with open(file, "w") as my_out_file:
 # Using library "resonator_tools" for fitting notch type resonators
 port1 = circuit.reflection_port()
 #
-port1.add_fromtxt(file, 'linmagphasedeg', 1, delimiter=' ')
+port1.add_fromtxt(file_new, 'linmagphasedeg', 1, delimiter=' ')
 print('reading of the data is successfully finished')
 
 # port1.autofit(electric_delay=None)
