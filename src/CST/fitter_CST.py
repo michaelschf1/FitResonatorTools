@@ -10,10 +10,11 @@ from resonator_tools import circuit
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
-import FitResonatorTools.src.utilities as ut
+import src.utilities as ut
 import pandas as pd
 
-def plot_dataframe(x, y , xlab = "Frequency, Hz", ylab = "S11 lin" ):
+
+def plot_dataframe(x, y, xlab="Frequency, Hz", ylab="S11 lin"):
 
     matplotlib.rcParams.update({'font.size': 20})
     fig = plt.figure()
@@ -28,11 +29,10 @@ def plot_dataframe(x, y , xlab = "Frequency, Hz", ylab = "S11 lin" ):
     # fig.savefig('my_figure.svg')  # vector image
 
 
-
 # Data file path
-folder  = '/Users/mykhailo/OneDrive - UNSW/research/CST/LGR&PBG_new' #for Mac
+folder = '/Users/mykhailo/OneDrive - UNSW/research/CST/LGR&PBG_new/new_CA6'  # for Mac
 # folder = r'C:\Users\z5119993\OneDrive - UNSW\research\JYU LGR\measurements' #for Windows
-file = 'CA5_flipchipLossless_full.txt'
+file = 'CA6_new_flip.txt'
 
 file_new = folder + '/' + file.replace('.txt', '') + '_COM.txt'
 file = folder + '/' + file
@@ -45,16 +45,15 @@ phi = []
 with open(file, "r") as my_input_file:
     i = 0
     for line in my_input_file:
-        if i>2:
+        if i > 2:
             data = line.split('\t')
             freqs.append(float(data[0]))
             mags.append(float(data[1]))
             phi.append(float(data[2]))
         else:
-            i+=1
+            i += 1
 
     my_input_file.close()
-
 
 
 # mags = []
@@ -67,6 +66,7 @@ with open(file, "r") as my_input_file:
 
 
 print('conversion successful!')
+
 
 def trim(mags, phases, freqs, fmin, fmax):
     freqs_new = []
@@ -83,16 +83,17 @@ def trim(mags, phases, freqs, fmin, fmax):
 
     return mags_new, phases_new, freqs_new
 
-mags, phi, freqs = trim(mags, phi, freqs, 6.86, 6.89)
+
+mags, phi, freqs = trim(mags, phi, freqs, 7.3, 7.38)
 
 
-
-plot_dataframe(freqs, mags, xlab = "Frequency, GHz", ylab = "S11, mag" )
-plot_dataframe(freqs, phi, xlab = "Frequency, GHz", ylab = "S11, deg" )
+plot_dataframe(freqs, mags, xlab="Frequency, GHz", ylab="S11, mag")
+plot_dataframe(freqs, phi, xlab="Frequency, GHz", ylab="S11, deg")
 # Write it the one single file with three columns
 # exit()
 
-## FITTING
+
+# FITTING
 
 
 with open(file_new, "w") as my_out_file:
@@ -101,13 +102,12 @@ with open(file_new, "w") as my_out_file:
     my_out_file.write('Phase' + '\n')
 
     for i in range(len(mags)):
-        if mags[i] !='':
+        if mags[i] != '':
             my_out_file.write(str(freqs[i]) + ' ')
             my_out_file.write(str(mags[i]) + ' ')
             my_out_file.write(str(phi[i]) + '\n')
 
     my_input_file.close()
-
 
 
 # Using library "resonator_tools" for fitting notch type resonators
@@ -125,4 +125,3 @@ print('reading of the data is successfully finished')
 port1.GUIfit()
 print("Fit results:", port1.fitresults)
 port1.plotall()
-
